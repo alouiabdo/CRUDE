@@ -61,9 +61,6 @@ function modefie() {
     });
     dele.forEach((e,i)=>{
         e.addEventListener("click",function(){
-            typeN = "delete"
-            console.log(i)
-            console.log(typeN)
             let id = e.getAttribute("alt");
             let req = new XMLHttpRequest();
             req.open("POST", "delete.php");
@@ -85,7 +82,7 @@ function modefie() {
 
         if(typeN === "modefie"){
             if (fn === "" || ln === "" || email === "") {
-                console.log("All fields are required.");
+                console.log("All required is fields");
             } else {
                 let req = new XMLHttpRequest();
                 req.open("GET", "modefie.php?"+"ln=" + ln + "&fn=" + fn + "&email=" + email+"&ido="+ido);
@@ -97,11 +94,22 @@ function modefie() {
             }
             function reloadPage() {
                 // Reload the current page
-                location.reload();
+                document.location.reload();
             }
             reloadPage()
-        }else if(typeN == "delete"){
-
+        }else if(typeN !== "modefie"){
+            if (fn === "" || ln === "" || email === "") {
+                console.log("All required is fields");
+            } else {
+                let req = new XMLHttpRequest();
+                req.open("GET", "setData.php?"+"ln=" + ln + "&fn=" + fn + "&email=" + email+"&ido="+ido);
+                req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                req.send("ln=" + ln + "&fn=" + fn + "&email=" + email+"&ido="+ido);
+                req.onload = () => {
+                    console.log(req.responseText);
+                };
+                document.location.reload()
+            }
         }
     });
 }
